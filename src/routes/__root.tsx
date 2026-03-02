@@ -1,34 +1,22 @@
-import { createRootRoute, Outlet } from '@tanstack/react-router'
+import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import AppSidebar from '../components/layout/AppSidebar'
-import { SidebarInset, SidebarProvider } from '../components/ui/sidebar'
-import { SiteHeader } from '../components/layout/SiteHeader'
 
-export const Route = createRootRoute({
+interface AuthState {
+  isAuthenticated: boolean
+  user: { id: string; fullName: string; email: string } | null
+  login: (email: string, password: string) => Promise<void>
+  logout: () => void
+}
+
+interface MyRouterContext {
+  auth: AuthState
+}
+
+export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => (
-    <>
-      <SidebarProvider
-        style={
-          {
-            '--sidebar-width': 'calc(var(--spacing) * 72)',
-            '--header-height': 'calc(var(--spacing) * 12)',
-          } as React.CSSProperties
-        }
-      >
-        <AppSidebar variant="inset" />
-        <SidebarInset>
-          <SiteHeader />
-          <div className="flex flex-1 flex-col">
-            <div className="@container/main flex flex-1 flex-col gap-2">
-              <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
-                <Outlet />
-              </div>
-            </div>
-          </div>
-        </SidebarInset>
-
-        <TanStackRouterDevtools />
-      </SidebarProvider>
-    </>
+    <div>
+      <Outlet />
+      <TanStackRouterDevtools />
+    </div>
   ),
 })

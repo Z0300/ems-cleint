@@ -1,13 +1,6 @@
 'use client'
 
-import {
-  AlarmClockCheckIcon,
-  CalendarClockIcon,
-  ClockCheckIcon,
-  GaugeCircle,
-  List,
-  ListCheckIcon,
-} from 'lucide-react'
+import { AlarmClockCheckIcon, GaugeCircle, ListCheckIcon } from 'lucide-react'
 import {
   Sidebar,
   SidebarHeader,
@@ -23,7 +16,7 @@ const data = {
   navMain: [
     {
       title: 'Dashboard',
-      url: '/',
+      url: '/dashboard',
       icon: GaugeCircle,
     },
     {
@@ -31,26 +24,6 @@ const data = {
       url: '/events',
       icon: ListCheckIcon,
     },
-    // {
-    //   title: 'Dashboard',
-    //   url: '/',
-    //   icon: LayoutDashboard,
-    //   isActive: true,
-    //   items: [
-    //     {
-    //       title: 'History',
-    //       url: '/',
-    //     },
-    //     {
-    //       title: 'Starred',
-    //       url: '/about',
-    //     },
-    //     {
-    //       title: 'Settings',
-    //       url: '#',
-    //     },
-    //   ],
-    // },
   ],
 }
 
