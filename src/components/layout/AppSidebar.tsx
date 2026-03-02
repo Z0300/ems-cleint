@@ -1,133 +1,74 @@
 'use client'
 
 import {
-  GalleryHorizontalEnd,
-  AudioWaveform,
-  Command,
-  SquareTerminal,
-  Bot,
-  BookOpen,
-  Settings2,
+  AlarmClockCheckIcon,
+  CalendarClockIcon,
+  ClockCheckIcon,
+  GaugeCircle,
+  List,
+  ListCheckIcon,
 } from 'lucide-react'
-import { Sidebar, SidebarHeader, SidebarContent } from '../ui/sidebar'
+import {
+  Sidebar,
+  SidebarHeader,
+  SidebarContent,
+  SidebarMenu,
+  SidebarMenuItem,
+  SidebarMenuButton,
+} from '../ui/sidebar'
 import { NavMain } from './NavbarMain'
+import { Link } from '@tanstack/react-router'
 
 const data = {
-  user: {
-    name: 'shadcn',
-    email: 'm@example.com',
-    avatar: '/avatars/shadcn.jpg',
-  },
-  teams: [
-    {
-      name: 'Acme Inc',
-      logo: GalleryHorizontalEnd,
-      plan: 'Enterprise',
-    },
-    {
-      name: 'Acme Corp.',
-      logo: AudioWaveform,
-      plan: 'Startup',
-    },
-    {
-      name: 'Evil Corp.',
-      logo: Command,
-      plan: 'Free',
-    },
-  ],
   navMain: [
     {
-      title: 'Playground',
-      url: '#',
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: 'History',
-          url: '#',
-        },
-        {
-          title: 'Starred',
-          url: '#',
-        },
-        {
-          title: 'Settings',
-          url: '#',
-        },
-      ],
+      title: 'Dashboard',
+      url: '/',
+      icon: GaugeCircle,
     },
     {
-      title: 'Models',
-      url: '#',
-      icon: Bot,
-      items: [
-        {
-          title: 'Genesis',
-          url: '#',
-        },
-        {
-          title: 'Explorer',
-          url: '#',
-        },
-        {
-          title: 'Quantum',
-          url: '#',
-        },
-      ],
+      title: 'Events',
+      url: '/events',
+      icon: ListCheckIcon,
     },
-    {
-      title: 'Documentation',
-      url: '#',
-      icon: BookOpen,
-      items: [
-        {
-          title: 'Introduction',
-          url: '#',
-        },
-        {
-          title: 'Get Started',
-          url: '#',
-        },
-        {
-          title: 'Tutorials',
-          url: '#',
-        },
-        {
-          title: 'Changelog',
-          url: '#',
-        },
-      ],
-    },
-    {
-      title: 'Settings',
-      url: '#',
-      icon: Settings2,
-      items: [
-        {
-          title: 'General',
-          url: '#',
-        },
-        {
-          title: 'Team',
-          url: '#',
-        },
-        {
-          title: 'Billing',
-          url: '#',
-        },
-        {
-          title: 'Limits',
-          url: '#',
-        },
-      ],
-    },
+    // {
+    //   title: 'Dashboard',
+    //   url: '/',
+    //   icon: LayoutDashboard,
+    //   isActive: true,
+    //   items: [
+    //     {
+    //       title: 'History',
+    //       url: '/',
+    //     },
+    //     {
+    //       title: 'Starred',
+    //       url: '/about',
+    //     },
+    //     {
+    //       title: 'Settings',
+    //       url: '#',
+    //     },
+    //   ],
+    // },
   ],
 }
 
 export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
-    <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader></SidebarHeader>
+    <Sidebar collapsible="offcanvas" {...props}>
+      <SidebarHeader>
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:p-1.5!">
+              <Link to="/">
+                <AlarmClockCheckIcon className="size-5!" />
+                <span className="text-base font-semibold">eMs Inc.</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+        </SidebarMenu>
+      </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>

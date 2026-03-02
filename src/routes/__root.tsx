@@ -1,23 +1,32 @@
 import { createRootRoute, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
-import { Link } from '@tanstack/react-router'
 import AppSidebar from '../components/layout/AppSidebar'
-import { SidebarProvider } from '../components/ui/sidebar'
+import { SidebarInset, SidebarProvider } from '../components/ui/sidebar'
+import { SiteHeader } from '../components/layout/SiteHeader'
 
 export const Route = createRootRoute({
   component: () => (
     <>
-      <SidebarProvider>
-        <AppSidebar />
-        <div className="flex gap-2 p-2">
-          <Link to="/" className="[&.active]:font-bold">
-            Home
-          </Link>
-          <Link to="/about" className="[&.active]:font-bold">
-            About
-          </Link>
-        </div>
-        <Outlet />
+      <SidebarProvider
+        style={
+          {
+            '--sidebar-width': 'calc(var(--spacing) * 72)',
+            '--header-height': 'calc(var(--spacing) * 12)',
+          } as React.CSSProperties
+        }
+      >
+        <AppSidebar variant="inset" />
+        <SidebarInset>
+          <SiteHeader />
+          <div className="flex flex-1 flex-col">
+            <div className="@container/main flex flex-1 flex-col gap-2">
+              <div className="flex flex-col gap-4 py-4 md:gap-6 md:py-6">
+                <Outlet />
+              </div>
+            </div>
+          </div>
+        </SidebarInset>
+
         <TanStackRouterDevtools />
       </SidebarProvider>
     </>
