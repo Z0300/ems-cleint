@@ -20,7 +20,7 @@ export const Route = createFileRoute('/login')({
 })
 
 function LoginComponent() {
-  const auth = useAuth()
+  const { login } = useAuth()
   const form = useForm({
     defaultValues: {
       email: '',
@@ -31,8 +31,7 @@ function LoginComponent() {
     },
     onSubmit: async ({ value }) => {
       try {
-        const res = await auth.login(value.email, value.password)
-        console.log(res)
+        await login(value.email, value.password)
         await router.invalidate()
         router.navigate({ to: '/dashboard' })
         sileo.success({

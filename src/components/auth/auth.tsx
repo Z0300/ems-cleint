@@ -61,13 +61,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
-  const logout = () => {
+  const logout = async () => {
+    await api.post('/auth/logout')
     setUser(null)
     setIsAuthenticated(false)
     localStorage.removeItem('accessToken')
   }
 
-  // Show loading state while checking auth
   if (isLoading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>
   }
