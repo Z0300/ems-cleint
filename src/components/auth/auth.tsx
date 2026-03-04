@@ -1,6 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { api } from '../../api/axios'
-import { clearAccessToken, getAccessToken, setAccessToken } from '../../lib/token'
 
 interface User {
   id: string
@@ -12,7 +11,8 @@ interface AuthState {
   isAuthenticated: boolean
   user: User | null
   login: (email: string, password: string) => Promise<void>
-  logout: () => Promise<void>
+  logout: () => void
+  refresh: () => Promise<void>
 }
 
 const AuthContext = createContext<AuthState | undefined>(undefined)
@@ -23,64 +23,57 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    const restoreSession = async () => {
+    const initAuth = async () => {
       try {
-        const token = getAccessToken()
+        const token = localStorage.getItem('accessToken')
 
-        if (!token) {
-          setIsLoading(false)
-          return
+        if (token) {
+          const res = await api.get('/auth/me')
+          setUser(res.data)
+          setIsAuthenticated(true)
         }
-
-        const res = await api.get('/auth/me')
-        setUser(res.data)
-        setIsAuthenticated(true)
       } catch (err) {
-        clearAccessToken()
+        localStorage.removeItem('accessToken')
+        setUser(null)
+        setIsAuthenticated(false)
       } finally {
         setIsLoading(false)
       }
     }
 
-    restoreSession()
+    initAuth()
   }, [])
 
+  const login = async (email: string, password: string) => {
+    const res = await api.post('/auth/login', { email, password })
+    setUser(res.data.user)
+    setIsAuthenticated(true)
+    localStorage.setItem('accessToken', res.data.token)
+  }
+
+  const refresh = async () => {
+    try {
+      const res = await api.post('/auth/refresh')
+      setUser(res.data.user)
+      setIsAuthenticated(true)
+    } catch {
+      logout()
+    }
+  }
+
+  const logout = () => {
+    setUser(null)
+    setIsAuthenticated(false)
+    localStorage.removeItem('accessToken')
+  }
+
+  // Show loading state while checking auth
   if (isLoading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>
   }
 
-  const login = async (email: string, password: string) => {
-    const res = await api.post('/auth/login', {
-      email,
-      password,
-    })
-
-    const { accessToken, user } = res.data
-
-    setAccessToken(accessToken)
-    setUser(user)
-    setIsAuthenticated(true)
-  }
-
-  const logout = async () => {
-    try {
-      await api.post('/auth/logout')
-    } catch (err) {}
-
-    clearAccessToken()
-    setUser(null)
-    setIsAuthenticated(false)
-  }
-
   return (
-    <AuthContext.Provider
-      value={{
-        isAuthenticated,
-        user,
-        login,
-        logout,
-      }}
-    >
+    <AuthContext.Provider value={{ isAuthenticated, user, login, logout, refresh }}>
       {children}
     </AuthContext.Provider>
   )
@@ -89,7 +82,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 export function useAuth() {
   const context = useContext(AuthContext)
   if (context === undefined) {
-    throw new Error('useAuth must be used within AuthProvider')
+    throw new Error('useAuth must be used within an AuthProvider')
   }
   return context
 }

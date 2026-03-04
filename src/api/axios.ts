@@ -1,7 +1,7 @@
 import axios from 'axios'
-import { clearAccessToken, getAccessToken, setAccessToken } from '../lib/token'
+import { router } from '../router'
 
-const API_BASE_URL = import.meta.env.API_BASE_URL
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 export const api = axios.create({
   baseURL: API_BASE_URL,
@@ -11,7 +11,7 @@ export const api = axios.create({
 // ------------------ Request interceptor ------------------
 
 api.interceptors.request.use((config) => {
-  const token = getAccessToken()
+  const token = localStorage.getItem('accessToken')
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`
@@ -39,7 +39,12 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      !originalRequest.url.includes('/auth/refresh') &&
+      !originalRequest.url.includes('/auth/login')
+    ) {
       if (isRefreshing) {
         return new Promise((resolve) => {
           subscribeTokenRefresh((token) => {
@@ -55,16 +60,16 @@ api.interceptors.response.use(
       try {
         const res = await axios.post(`${API_BASE_URL}/auth/refresh`, {}, { withCredentials: true })
 
-        const newAccessToken = res.data.accessToken
+        const newAccessToken = res.data.token
 
-        setAccessToken(newAccessToken)
+        localStorage.setItem('accessToken', newAccessToken)
         onRefreshed(newAccessToken)
 
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`
         return api(originalRequest)
       } catch (refreshError) {
-        clearAccessToken()
-        window.location.href = '/login'
+        localStorage.removeItem('accessToken')
+        router.navigate({ to: '/login' })
         return Promise.reject(refreshError)
       } finally {
         isRefreshing = false
