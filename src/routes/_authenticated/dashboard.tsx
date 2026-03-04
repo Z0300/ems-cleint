@@ -6,6 +6,7 @@ export const Route = createFileRoute('/_authenticated/dashboard')({
 
 function DashboardComponent() {
   const { auth } = Route.useRouteContext()
+  console.log(auth)
   return (
     <div>
       {' '}
