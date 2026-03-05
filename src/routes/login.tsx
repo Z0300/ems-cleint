@@ -33,7 +33,7 @@ function LoginComponent() {
       try {
         await login(value.email, value.password)
         await router.invalidate()
-        router.navigate({ to: '/dashboard' })
+        router.navigate({ to: '/' })
         sileo.success({
           title: 'Login successful',
           description: 'You have successfully logged in.',

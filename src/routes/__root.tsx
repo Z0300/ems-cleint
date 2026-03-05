@@ -6,7 +6,6 @@ interface AuthState {
   user: { id: string; fullName: string; email: string } | null
   login: (email: string, password: string) => Promise<void>
   logout: () => void
-  refresh: () => Promise<void>
 }
 
 interface MyRouterContext {
@@ -20,4 +19,5 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       <TanStackRouterDevtools position="bottom-right" />
     </div>
   ),
+  notFoundComponent: () => <div>Not found</div>,
 })

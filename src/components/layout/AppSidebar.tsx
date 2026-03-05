@@ -20,7 +20,7 @@ const data = {
   navMain: [
     {
       title: 'Dashboard',
-      url: '/dashboard',
+      url: '/',
       icon: GaugeCircle,
     },
     {
@@ -46,7 +46,7 @@ export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sid
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:p-1.5!">
               <Link
-                to="/dashboard"
+                to="/"
                 className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium hover:bg-accent data-[state=open]:bg-accent"
               >
                 <AlarmClockCheckIcon className="size-5!" />
