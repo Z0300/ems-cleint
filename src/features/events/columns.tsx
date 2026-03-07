@@ -10,15 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '../../components/ui/dropdown-menu'
 import { Button } from '../../components/ui/button'
-import {
-  BellDotIcon,
-  BombIcon,
-  CalendarCheckIcon,
-  CalendarX2,
-  CalendarX2Icon,
-  EllipsisVertical,
-  StampIcon,
-} from 'lucide-react'
+import { BellDotIcon, BombIcon, EllipsisVertical } from 'lucide-react'
 import { format } from 'date-fns'
 import { Badge } from '../../components/ui/badge'
 
