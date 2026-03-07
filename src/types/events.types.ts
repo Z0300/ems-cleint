@@ -13,4 +13,4 @@ const EventStatus = {
   CANCELLED: 'CANCELLED' as const,
 } as const
 
-type EventStatus = (typeof EventStatus)[keyof typeof EventStatus]
+export type EventStatus = (typeof EventStatus)[keyof typeof EventStatus]
