@@ -15,6 +15,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedEventsIndexRouteImport } from './routes/_authenticated/events/index'
+import { Route as AuthenticatedEventsCreateRouteImport } from './routes/_authenticated/events/create'
 import { Route as AuthenticatedEventsEventsIdRouteImport } from './routes/_authenticated/events/$eventsId'
 
 const SignupRoute = SignupRouteImport.update({
@@ -47,6 +48,12 @@ const AuthenticatedEventsIndexRoute =
     path: '/events/',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
+const AuthenticatedEventsCreateRoute =
+  AuthenticatedEventsCreateRouteImport.update({
+    id: '/events/create',
+    path: '/events/create',
+    getParentRoute: () => AuthenticatedRoute,
+  } as any)
 const AuthenticatedEventsEventsIdRoute =
   AuthenticatedEventsEventsIdRouteImport.update({
     id: '/events/$eventsId',
@@ -60,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/logout': typeof LogoutRoute
   '/signup': typeof SignupRoute
   '/events/$eventsId': typeof AuthenticatedEventsEventsIdRoute
+  '/events/create': typeof AuthenticatedEventsCreateRoute
   '/events/': typeof AuthenticatedEventsIndexRoute
 }
 export interface FileRoutesByTo {
@@ -68,6 +76,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/': typeof AuthenticatedIndexRoute
   '/events/$eventsId': typeof AuthenticatedEventsEventsIdRoute
+  '/events/create': typeof AuthenticatedEventsCreateRoute
   '/events': typeof AuthenticatedEventsIndexRoute
 }
 export interface FileRoutesById {
@@ -78,6 +87,7 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/events/$eventsId': typeof AuthenticatedEventsEventsIdRoute
+  '/_authenticated/events/create': typeof AuthenticatedEventsCreateRoute
   '/_authenticated/events/': typeof AuthenticatedEventsIndexRoute
 }
 export interface FileRouteTypes {
@@ -88,9 +98,17 @@ export interface FileRouteTypes {
     | '/logout'
     | '/signup'
     | '/events/$eventsId'
+    | '/events/create'
     | '/events/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/logout' | '/signup' | '/' | '/events/$eventsId' | '/events'
+  to:
+    | '/login'
+    | '/logout'
+    | '/signup'
+    | '/'
+    | '/events/$eventsId'
+    | '/events/create'
+    | '/events'
   id:
     | '__root__'
     | '/_authenticated'
@@ -99,6 +117,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/_authenticated/'
     | '/_authenticated/events/$eventsId'
+    | '/_authenticated/events/create'
     | '/_authenticated/events/'
   fileRoutesById: FileRoutesById
 }
@@ -153,6 +172,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEventsIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/events/create': {
+      id: '/_authenticated/events/create'
+      path: '/events/create'
+      fullPath: '/events/create'
+      preLoaderRoute: typeof AuthenticatedEventsCreateRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/events/$eventsId': {
       id: '/_authenticated/events/$eventsId'
       path: '/events/$eventsId'
@@ -166,12 +192,14 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedEventsEventsIdRoute: typeof AuthenticatedEventsEventsIdRoute
+  AuthenticatedEventsCreateRoute: typeof AuthenticatedEventsCreateRoute
   AuthenticatedEventsIndexRoute: typeof AuthenticatedEventsIndexRoute
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedEventsEventsIdRoute: AuthenticatedEventsEventsIdRoute,
+  AuthenticatedEventsCreateRoute: AuthenticatedEventsCreateRoute,
   AuthenticatedEventsIndexRoute: AuthenticatedEventsIndexRoute,
 }
 

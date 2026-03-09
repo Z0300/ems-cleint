@@ -7,9 +7,11 @@ import { Tabs } from '../../ui/tabs'
 import { LucidePlus } from 'lucide-react'
 import { TableTabs, type Option } from './TableTabs'
 import { TableSelect } from './TableSelect'
+import { Link } from '@tanstack/react-router'
 
 interface TableToolbarProps<T extends string> {
     value: T
+    to: string
     onChange: (value: T) => void
     searchValue: string
     onSearchChange?: (search: string) => void
@@ -19,6 +21,7 @@ interface TableToolbarProps<T extends string> {
 
 export function TableToolbar<T extends string>({
     tabs,
+    to,
     value,
     onChange,
     searchValue,
@@ -42,10 +45,12 @@ export function TableToolbar<T extends string>({
                         className="w-64 focus-visible:ring-0 focus-visible:ring-offset-0"
                     />
 
-                    <Button variant="outline" size="sm">
-                        <LucidePlus />
-                        <span className="hidden lg:inline">Add New</span>
-                    </Button>
+                    <Link to={to}>
+                        <Button variant="outline" size="sm">
+                            <LucidePlus />
+                            <span className="hidden lg:inline">Add New</span>
+                        </Button>
+                    </Link>
                 </div>
             </div>
         </Tabs>

@@ -1,10 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
-import { keepPreviousData, useQuery } from '@tanstack/react-query'
-import { api } from '../../../api/client'
 import { DataTableSkeleton } from '../../../components/common/data-table/TableLoader'
 import { EventsTable } from '../../../features/events/table'
-import type { PaginatedResponse } from '../../../types/page.types'
-import type { Events } from '../../../types/events.types'
+import { useEvents } from '../../../features/events/queries/event.queries'
 import { useEffect, useState } from 'react'
 
 export const Route = createFileRoute('/_authenticated/events/')({
@@ -27,22 +24,17 @@ function EventsComponent() {
   }, [search])
 
 
-  const { isPending, error, data } = useQuery({
-    queryKey: ['events', status, page, pageSize, debouncedSearch],
-    queryFn: async () =>
-      await api
-        .get<PaginatedResponse<Events>>('/events', {
-          params: { status, page, size: pageSize, name: debouncedSearch },
-        })
-        .then((res) => res.data),
-    placeholderData: keepPreviousData,
+  const { isPending, error, data } = useEvents({
+    status,
+    page,
+    size: pageSize,
+    name: debouncedSearch,
   })
 
   const handlePageChange = (newPage: number, newSize?: number) => {
     setPage(newPage)
     if (newSize) setPageSize(newSize)
   }
-
 
   if (isPending) return <DataTableSkeleton />
   if (error) return 'An error has occurred: ' + error.message
