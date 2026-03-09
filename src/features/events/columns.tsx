@@ -1,7 +1,7 @@
 'use client'
 
 import type { ColumnDef } from '@tanstack/react-table'
-import type { Events } from '../../types/events.types'
+import type { Events } from '../../types/events/events'
 import {
   DropdownMenu,
   DropdownMenuContent,

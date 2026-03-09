@@ -10,11 +10,11 @@ import {
 } from '../../components/ui/table'
 
 import { flexRender, getCoreRowModel, useReactTable } from '@tanstack/react-table'
-import type { PaginatedResponse } from '../../types/page.types'
+import type { PaginatedResponse } from '../common/types/page.types'
 import { columns } from './columns'
-import type { Events } from '../../types/events.types'
 import { TableToolbar } from '../../components/common/data-table/TableToolbar'
 import { TablePagination } from '../../components/common/data-table/TablePagination'
+import type { Events } from './types/events.types'
 
 interface DataTableProps {
   data: PaginatedResponse<Events>
@@ -50,6 +50,7 @@ export function EventsTable({ data, status, search, onPageChange, onStatusChange
   return (
     <>
       <TableToolbar
+        to="/events/create"
         value={status}
         onChange={(s) => {
           onStatusChange?.(s)

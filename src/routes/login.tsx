@@ -35,12 +35,12 @@ function LoginComponent() {
         await router.invalidate()
         router.navigate({ to: '/' })
         sileo.success({
-          title: 'Login successful',
+          title: 'Success',
           description: 'You have successfully logged in.',
         })
       } catch (error) {
         sileo.error({
-          title: 'Login failed',
+          title: 'Error',
           description:
             'An error occurred while logging in. Please check your credentials and try again.',
         })

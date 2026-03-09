@@ -13,7 +13,7 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <App />
-      <Toaster position="top-right" />
+      <Toaster position='top-right' theme='dark' />
       <TanStackDevtools config={{ hideUntilHover: true }} plugins={[formDevtoolsPlugin()]} />
     </StrictMode>,
   )
