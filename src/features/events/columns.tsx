@@ -1,7 +1,7 @@
 'use client'
 
 import type { ColumnDef } from '@tanstack/react-table'
-import type { Events } from '../../types/events/events'
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +13,8 @@ import { Button } from '../../components/ui/button'
 import { BellDotIcon, BombIcon, EllipsisVertical } from 'lucide-react'
 import { format } from 'date-fns'
 import { Badge } from '../../components/ui/badge'
+import type { Events } from './types/events.types'
+import { Link } from '@tanstack/react-router'
 
 export const columns: ColumnDef<Events>[] = [
   {
@@ -69,25 +71,36 @@ export const columns: ColumnDef<Events>[] = [
   {
     id: 'actions',
     size: 50,
-    cell: () => (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button
-            variant="ghost"
-            className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
-            size="icon"
-          >
-            <EllipsisVertical />
-            <span className="sr-only">Open menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-32">
-          <DropdownMenuItem>Edit</DropdownMenuItem>
-          <DropdownMenuItem>Close</DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem variant="destructive">Cancel</DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
+    cell: ({ row }) => {
+      const event = row.original;
+      return (
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
+              size="icon"
+            >
+              <EllipsisVertical />
+              <span className="sr-only">Open menu</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-32">
+            <DropdownMenuItem asChild>
+              <Link
+                to="/events/$eventId/edit"
+                params={{ eventId: event.id.toString() }}
+              >
+                Edit
+              </Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem>Close</DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem variant="destructive">Cancel</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )
+    },
   },
 ]

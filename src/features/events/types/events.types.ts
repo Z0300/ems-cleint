@@ -33,6 +33,21 @@ export interface EventCreate {
   capacity: number
 }
 
+export type UpdateEventPayload = {
+  id: number
+  data: EventUpdate
+}
+
+interface EventUpdate {
+  title: string
+  eventDate: string
+  startTime: string
+  endTime: string
+  description: string
+  location: string
+  capacity: number
+}
+
 const EventStatuses = {
   OPEN: 'OPEN' as const,
   CLOSED: 'CLOSED' as const,

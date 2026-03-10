@@ -1,24 +1,15 @@
 'use client'
 
-import { ChevronRight, CircleFadingPlus, MailCheckIcon, type LucideIcon } from 'lucide-react'
+import { type LucideIcon } from 'lucide-react'
 
 import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from '../../components/ui/collapsible'
-import {
   SidebarGroup,
-  SidebarGroupLabel,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarGroupContent,
-  SidebarMenuSub,
-  SidebarMenuSubButton,
 } from '../../components/ui/sidebar'
 import { Link } from '@tanstack/react-router'
-import { Button } from '../ui/button'
 
 const activeClasses =
   '[&.active]:bg-primary \
