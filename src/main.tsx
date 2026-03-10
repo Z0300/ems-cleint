@@ -13,7 +13,19 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <App />
-      <Toaster position='top-right' theme='dark' />
+      <Toaster
+        position="top-right"
+        options={{
+          fill: "#171717",
+          roundness: 16,
+          styles: {
+            title: "text-white!",
+            description: "text-white/75!",
+            badge: "bg-white/10!",
+            button: "bg-white/10! hover:bg-white/15!",
+          },
+        }}
+      />
       <TanStackDevtools config={{ hideUntilHover: true }} plugins={[formDevtoolsPlugin()]} />
     </StrictMode>,
   )
