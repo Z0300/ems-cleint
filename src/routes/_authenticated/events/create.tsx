@@ -9,16 +9,18 @@ export const Route = createFileRoute('/_authenticated/events/create')({
   }
 })
 
-
 function CreateEventComponent() {
   const { mutateAsync, isPending } = useCreateEvent()
   return (
     <EventForm
       submitLabel="Create"
+      actionTitle='Create Event'
+      actionDescription='Add a new event to your schedule'
       isPending={isPending}
       onSubmit={async (payload) => {
         await mutateAsync(payload)
       }}
     />
+
   )
 }
