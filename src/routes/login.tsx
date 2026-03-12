@@ -7,8 +7,8 @@ import { Input } from '../components/ui/input'
 import { Button } from '../components/ui/button'
 import * as z from 'zod'
 import { router } from '../router'
-import { sileo } from 'sileo'
 import { useAuth } from '../components/auth/auth'
+import { toast } from 'sonner'
 
 const formSchema = z.object({
   email: z.string().nonempty('Email is required.'),
@@ -34,16 +34,9 @@ function LoginComponent() {
         await login(value.email, value.password)
         await router.invalidate()
         router.navigate({ to: '/' })
-        sileo.success({
-          title: 'Success',
-          description: 'You have successfully logged in.',
-        })
+        toast.success('Login successful')
       } catch (error) {
-        sileo.error({
-          title: 'Error',
-          description:
-            'An error occurred while logging in. Please check your credentials and try again.',
-        })
+        toast.error('Login failed')
       }
     },
   })

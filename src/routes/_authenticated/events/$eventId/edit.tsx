@@ -16,10 +16,14 @@ function EditEventComponent() {
   const { data } = useEvent(eventId)
   const { mutateAsync, isPending } = useUpdateEvent()
 
+  console.log(data)
+
   return (
     <EventForm
       defaultValues={data}
       submitLabel="Update"
+      actionTitle='Update Event'
+      actionDescription='Update event details'
       isPending={isPending}
       onSubmit={async (payload) => {
         await mutateAsync({ id: Number(eventId), data: payload })

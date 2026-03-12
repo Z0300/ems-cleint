@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { createEvent, updateEvent } from '../api/events.api'
 import { eventKeys } from './event.keys'
 import { router } from '../../../router'
+import { toast } from 'sonner'
 
 export const useCreateEvent = () => {
   const queryClient = useQueryClient()
@@ -13,6 +14,8 @@ export const useCreateEvent = () => {
       queryClient.invalidateQueries({
         queryKey: eventKeys.lists(),
       })
+
+      toast.success('Event created successfully')
 
       router.navigate({ to: '/events' })
     },
@@ -29,6 +32,8 @@ export const useUpdateEvent = () => {
       queryClient.invalidateQueries({
         queryKey: eventKeys.lists(),
       })
+
+      toast.success('Event updated successfully')
 
       router.navigate({ to: '/events' })
     },
