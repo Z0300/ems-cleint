@@ -1,15 +1,23 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { api } from '../../api/client'
+import { jwtDecode } from "jwt-decode";
 
 interface User {
   id: string
   fullName: string
   email: string
+  role: string
+  //roles: string[]
+  //permissions: string[]
 }
 
 interface AuthState {
   isAuthenticated: boolean
   user: User | null
+  hasRole: (role: string) => boolean
+  // hasAnyRole: (roles: string[]) => boolean
+  // hasPermission: (permission: string) => boolean
+  // hasAnyPermission: (permissions: string[]) => boolean
   login: (email: string, password: string) => Promise<void>
   logout: () => void
 }
@@ -20,6 +28,26 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+
+  const hasRole = (role: string) => {
+    return user?.role === role
+  }
+
+  // const hasAnyRole = (roles: string[]) => {
+  //   return roles.some((role) => user?.role === role)
+  // }
+
+  // const hasPermission = (permission: string) => {
+  //   return user?.permissions.includes(permission) ?? false
+  // }
+
+  // const hasAnyPermission = (permissions: string[]) => {
+  //   return (
+  //     permissions.some((permission) =>
+  //       user?.permissions.includes(permission),
+  //     ) ?? false
+  //   )
+  // }
 
   useEffect(() => {
     const initAuth = async () => {
@@ -41,10 +69,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const login = async (email: string, password: string) => {
     const res = await api.post('/auth/login', { email, password })
+    const decodedToken: { role: string | null } = jwtDecode(res.data.token);
 
     localStorage.setItem('accessToken', res.data.token)
 
-    setUser(res.data.user)
+    setUser({ ...res.data.user, role: decodedToken.role })
     setIsAuthenticated(true)
   }
 
@@ -62,7 +91,16 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>
+    <AuthContext.Provider value={{
+      isAuthenticated,
+      user,
+      login,
+      logout,
+      hasRole,
+      // hasAnyRole,
+      // hasPermission,
+      // hasAnyPermission
+    }}>
       {children}
     </AuthContext.Provider>
   )

@@ -3,6 +3,7 @@ import { DataTableSkeleton } from '../../../components/common/data-table/TableLo
 import { EventsTable } from '../../../features/events/table'
 import { useEvents } from '../../../features/events/queries/event.queries'
 import { useEffect, useState } from 'react'
+import { useAuth } from '../../../components/auth/auth'
 
 export const Route = createFileRoute('/_authenticated/events/')({
   component: EventsComponent,
@@ -17,7 +18,7 @@ function EventsComponent() {
   const [pageSize, setPageSize] = useState(20)
   const [search, setSearch] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState(search)
-
+  const user = useAuth();
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedSearch(search), 400)
     return () => clearTimeout(handler)
