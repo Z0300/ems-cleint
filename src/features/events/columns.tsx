@@ -3,15 +3,13 @@
 import type { ColumnDef } from '@tanstack/react-table'
 
 import {
-  DropdownMenu,
-  DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuTrigger,
 } from '../../components/ui/dropdown-menu'
-import { Button } from '../../components/ui/button'
-import { BellDotIcon, BombIcon, EllipsisVertical } from 'lucide-react'
+import { Eraser, FileMinusCorner, FilePlusCorner, Loader } from 'lucide-react'
 import { format } from 'date-fns'
+import { TableRowActions } from '../../components/common/data-table/TableRowActions'
+import { Button } from '../../components/ui/button'
 import { Badge } from '../../components/ui/badge'
 import type { Events } from './types/events.types'
 import { Link } from '@tanstack/react-router'
@@ -22,6 +20,9 @@ export const columns: ColumnDef<Events>[] = [
     enableResizing: false,
     size: 300,
     header: 'Title',
+    cell: ({ row }) => {
+      return <div className="max-w-[300px] truncate">{row.original.title}</div>
+    }
   },
   {
     accessorKey: 'eventDate',
@@ -60,33 +61,31 @@ export const columns: ColumnDef<Events>[] = [
   {
     accessorKey: 'status',
     header: 'Status',
-    size: 100,
-    cell: ({ row }) => (
-      <Badge variant="outline" className="px-1.5 text-muted-foreground">
-        {row.original.status === 'OPEN' ? <BellDotIcon /> : <BombIcon />}
-        {row.original.status}
+    size: 50,
+    cell: ({ row }) => {
+      const status = row.original.status
+      const isOpen = status === 'OPEN'
+      const color = isOpen ? 'text-green-400' : 'text-red-400'
+
+      return <Badge
+        variant="outline"
+        className={`px-1.5 flex items-center gap-1 font-normal ${color}`}
+      >
+        {isOpen ? <Loader className="h-3 w-3" /> : <Eraser className="h-3 w-3" />}
+        {status.charAt(0).toUpperCase() + status.slice(1).toLowerCase()}
       </Badge>
-    ),
+    },
   },
   {
     id: 'actions',
     size: 50,
-    cell: ({ row }) => {
+    cell: function Cell({ row }) {
       const event = row.original;
-      return (
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              className="flex size-8 text-muted-foreground data-[state=open]:bg-muted"
-              size="icon"
-            >
-              <EllipsisVertical />
-              <span className="sr-only">Open menu</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-32">
+      return (
+        <div className="flex items-center justify-end gap-2 w-full">
+
+          <TableRowActions>
             <DropdownMenuItem asChild>
               <Link
                 to="/events/$eventId/edit"
@@ -98,8 +97,8 @@ export const columns: ColumnDef<Events>[] = [
             <DropdownMenuItem>Close</DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem variant="destructive">Cancel</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          </TableRowActions>
+        </div>
       )
     },
   },

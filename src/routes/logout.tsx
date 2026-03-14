@@ -1,5 +1,4 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useAuth } from '../components/auth/auth'
 import { useEffect } from 'react'
 
 export const Route = createFileRoute('/logout')({
@@ -7,15 +6,15 @@ export const Route = createFileRoute('/logout')({
 })
 
 function LogoutComponent() {
-  const { logout } = useAuth()
+  const { auth } = Route.useRouteContext()
   const navigate = useNavigate()
 
   useEffect(() => {
     const doLogout = async () => {
-      logout()
+      auth.logout()
       navigate({ to: '/login', replace: true })
     }
 
     doLogout()
-  }, [logout, navigate])
+  }, [auth, navigate])
 }

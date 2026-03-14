@@ -1,5 +1,6 @@
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import { ErrorComponent } from '../components/common/error'
 import { NotFound } from '../components/common/not-found'
 
 interface AuthState {
@@ -21,10 +22,11 @@ interface MyRouterContext {
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
   component: () => (
-    <div>
+    <>
       <Outlet />
       <TanStackRouterDevtools position="bottom-right" />
-    </div>
+    </>
   ),
   notFoundComponent: () => <NotFound />,
+  errorComponent: () => <ErrorComponent />,
 })

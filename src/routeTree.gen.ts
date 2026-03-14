@@ -11,13 +11,13 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UnauthorizedRouteImport } from './routes/unauthorized'
 import { Route as SignupRouteImport } from './routes/signup'
+import { Route as NotfoundRouteImport } from './routes/notfound'
 import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as AuthenticatedEventsIndexRouteImport } from './routes/_authenticated/events/index'
 import { Route as AuthenticatedEventsCreateRouteImport } from './routes/_authenticated/events/create'
-import { Route as AuthenticatedEventsEventsIdRouteImport } from './routes/_authenticated/events/$eventsId'
 import { Route as AuthenticatedEventsEventIdEditRouteImport } from './routes/_authenticated/events/$eventId/edit'
 
 const UnauthorizedRoute = UnauthorizedRouteImport.update({
@@ -28,6 +28,11 @@ const UnauthorizedRoute = UnauthorizedRouteImport.update({
 const SignupRoute = SignupRouteImport.update({
   id: '/signup',
   path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotfoundRoute = NotfoundRouteImport.update({
+  id: '/notfound',
+  path: '/notfound',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LogoutRoute = LogoutRouteImport.update({
@@ -61,12 +66,6 @@ const AuthenticatedEventsCreateRoute =
     path: '/events/create',
     getParentRoute: () => AuthenticatedRoute,
   } as any)
-const AuthenticatedEventsEventsIdRoute =
-  AuthenticatedEventsEventsIdRouteImport.update({
-    id: '/events/$eventsId',
-    path: '/events/$eventsId',
-    getParentRoute: () => AuthenticatedRoute,
-  } as any)
 const AuthenticatedEventsEventIdEditRoute =
   AuthenticatedEventsEventIdEditRouteImport.update({
     id: '/events/$eventId/edit',
@@ -78,9 +77,9 @@ export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
+  '/notfound': typeof NotfoundRoute
   '/signup': typeof SignupRoute
   '/unauthorized': typeof UnauthorizedRoute
-  '/events/$eventsId': typeof AuthenticatedEventsEventsIdRoute
   '/events/create': typeof AuthenticatedEventsCreateRoute
   '/events/': typeof AuthenticatedEventsIndexRoute
   '/events/$eventId/edit': typeof AuthenticatedEventsEventIdEditRoute
@@ -88,10 +87,10 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
+  '/notfound': typeof NotfoundRoute
   '/signup': typeof SignupRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/': typeof AuthenticatedIndexRoute
-  '/events/$eventsId': typeof AuthenticatedEventsEventsIdRoute
   '/events/create': typeof AuthenticatedEventsCreateRoute
   '/events': typeof AuthenticatedEventsIndexRoute
   '/events/$eventId/edit': typeof AuthenticatedEventsEventIdEditRoute
@@ -101,10 +100,10 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteWithChildren
   '/login': typeof LoginRoute
   '/logout': typeof LogoutRoute
+  '/notfound': typeof NotfoundRoute
   '/signup': typeof SignupRoute
   '/unauthorized': typeof UnauthorizedRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
-  '/_authenticated/events/$eventsId': typeof AuthenticatedEventsEventsIdRoute
   '/_authenticated/events/create': typeof AuthenticatedEventsCreateRoute
   '/_authenticated/events/': typeof AuthenticatedEventsIndexRoute
   '/_authenticated/events/$eventId/edit': typeof AuthenticatedEventsEventIdEditRoute
@@ -115,9 +114,9 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/logout'
+    | '/notfound'
     | '/signup'
     | '/unauthorized'
-    | '/events/$eventsId'
     | '/events/create'
     | '/events/'
     | '/events/$eventId/edit'
@@ -125,10 +124,10 @@ export interface FileRouteTypes {
   to:
     | '/login'
     | '/logout'
+    | '/notfound'
     | '/signup'
     | '/unauthorized'
     | '/'
-    | '/events/$eventsId'
     | '/events/create'
     | '/events'
     | '/events/$eventId/edit'
@@ -137,10 +136,10 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/login'
     | '/logout'
+    | '/notfound'
     | '/signup'
     | '/unauthorized'
     | '/_authenticated/'
-    | '/_authenticated/events/$eventsId'
     | '/_authenticated/events/create'
     | '/_authenticated/events/'
     | '/_authenticated/events/$eventId/edit'
@@ -150,6 +149,7 @@ export interface RootRouteChildren {
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
   LoginRoute: typeof LoginRoute
   LogoutRoute: typeof LogoutRoute
+  NotfoundRoute: typeof NotfoundRoute
   SignupRoute: typeof SignupRoute
   UnauthorizedRoute: typeof UnauthorizedRoute
 }
@@ -168,6 +168,13 @@ declare module '@tanstack/react-router' {
       path: '/signup'
       fullPath: '/signup'
       preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/notfound': {
+      id: '/notfound'
+      path: '/notfound'
+      fullPath: '/notfound'
+      preLoaderRoute: typeof NotfoundRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/logout': {
@@ -212,13 +219,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedEventsCreateRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
-    '/_authenticated/events/$eventsId': {
-      id: '/_authenticated/events/$eventsId'
-      path: '/events/$eventsId'
-      fullPath: '/events/$eventsId'
-      preLoaderRoute: typeof AuthenticatedEventsEventsIdRouteImport
-      parentRoute: typeof AuthenticatedRoute
-    }
     '/_authenticated/events/$eventId/edit': {
       id: '/_authenticated/events/$eventId/edit'
       path: '/events/$eventId/edit'
@@ -231,7 +231,6 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteChildren {
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
-  AuthenticatedEventsEventsIdRoute: typeof AuthenticatedEventsEventsIdRoute
   AuthenticatedEventsCreateRoute: typeof AuthenticatedEventsCreateRoute
   AuthenticatedEventsIndexRoute: typeof AuthenticatedEventsIndexRoute
   AuthenticatedEventsEventIdEditRoute: typeof AuthenticatedEventsEventIdEditRoute
@@ -239,7 +238,6 @@ interface AuthenticatedRouteChildren {
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
-  AuthenticatedEventsEventsIdRoute: AuthenticatedEventsEventsIdRoute,
   AuthenticatedEventsCreateRoute: AuthenticatedEventsCreateRoute,
   AuthenticatedEventsIndexRoute: AuthenticatedEventsIndexRoute,
   AuthenticatedEventsEventIdEditRoute: AuthenticatedEventsEventIdEditRoute,
@@ -253,6 +251,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginRoute: LoginRoute,
   LogoutRoute: LogoutRoute,
+  NotfoundRoute: NotfoundRoute,
   SignupRoute: SignupRoute,
   UnauthorizedRoute: UnauthorizedRoute,
 }

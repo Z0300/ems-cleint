@@ -8,7 +8,7 @@ import { Textarea } from '../../components/ui/textarea'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '../../components/ui/card'
 import { Spinner } from '../../components/ui/spinner'
-import type { EventCreate } from './types/events.types'
+import type { Event, EventCreate } from './types/events.types'
 
 
 
@@ -23,7 +23,7 @@ const formSchema = z.object({
 })
 
 type EventFormProps = {
-    defaultValues?: EventCreate
+    defaultValues?: Event
     onSubmit: (payload: EventCreate) => Promise<void>
     isPending?: boolean
     actionTitle?: string;

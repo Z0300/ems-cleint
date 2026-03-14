@@ -3,7 +3,7 @@ import { DataTableSkeleton } from '../../../components/common/data-table/TableLo
 import { EventsTable } from '../../../features/events/table'
 import { useEvents } from '../../../features/events/queries/event.queries'
 import { useEffect, useState } from 'react'
-import { useAuth } from '../../../components/auth/auth'
+import { ErrorComponent } from '../../../components/common/error'
 
 export const Route = createFileRoute('/_authenticated/events/')({
   component: EventsComponent,
@@ -18,7 +18,7 @@ function EventsComponent() {
   const [pageSize, setPageSize] = useState(20)
   const [search, setSearch] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState(search)
-  const user = useAuth();
+
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedSearch(search), 400)
     return () => clearTimeout(handler)
@@ -38,7 +38,7 @@ function EventsComponent() {
   }
 
   if (isPending) return <DataTableSkeleton />
-  if (error) return 'An error has occurred: ' + error.message
+  if (error) return <ErrorComponent error={error} />
 
   return (
     <div className="relative flex flex-col gap-4 overflow-auto px-4 lg:px-6">

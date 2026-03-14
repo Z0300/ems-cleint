@@ -7,7 +7,6 @@ import { Input } from '../components/ui/input'
 import { Button } from '../components/ui/button'
 import * as z from 'zod'
 import { router } from '../router'
-import { useAuth } from '../components/auth/auth'
 import { toast } from 'sonner'
 
 const formSchema = z.object({
@@ -20,7 +19,7 @@ export const Route = createFileRoute('/login')({
 })
 
 function LoginComponent() {
-  const { login } = useAuth()
+  const { auth } = Route.useRouteContext()
   const form = useForm({
     defaultValues: {
       email: '',
@@ -31,7 +30,7 @@ function LoginComponent() {
     },
     onSubmit: async ({ value }) => {
       try {
-        await login(value.email, value.password)
+        await auth.login(value.email, value.password)
         await router.invalidate()
         router.navigate({ to: '/' })
         toast.success('Login successful')
