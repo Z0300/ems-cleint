@@ -22,7 +22,9 @@ export const Route = createFileRoute('/_authenticated/events/create')({
 
 function CreateEventComponent() {
   const { mutateAsync, isPending } = useCreateEvent()
+
   return (
+
     <EventForm
       submitLabel="Create"
       actionTitle='Create Event'

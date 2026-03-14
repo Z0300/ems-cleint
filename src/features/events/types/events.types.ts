@@ -10,9 +10,12 @@ export interface Events {
 export interface Event {
   id: number
   title: string
-  eventDate: Date
-  startTime: Date
-  endTime: Date
+  eventDate: string
+  startTime: string
+  endTime: string
+  description: string
+  location: string
+  capacity: number
   status: EventStatuses
 }
 

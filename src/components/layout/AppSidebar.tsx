@@ -13,8 +13,7 @@ import {
 import { NavMain } from './NavbarMain'
 import { Link } from '@tanstack/react-router'
 import { NavUser } from './NavbarUser'
-
-import { useAuth } from '../auth/auth'
+import { Route } from '../../routes/__root'
 
 const data = {
   navMain: [
@@ -37,7 +36,7 @@ const data = {
 }
 
 export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { user } = useAuth()
+  const { auth } = Route.useRouteContext()
 
   return (
     <Sidebar collapsible="offcanvas" {...props}>
@@ -50,7 +49,7 @@ export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sid
                 className="flex items-center gap-2 rounded-md px-2 py-1.5 text-sm font-medium hover:bg-accent data-[state=open]:bg-accent"
               >
                 <AlarmClockCheckIcon className="size-5!" />
-                <span className="text-base font-semibold">eMs Inc.</span>
+                <span className="text-base font-semibold">Evently</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
@@ -60,7 +59,7 @@ export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sid
         <NavMain items={data.navMain} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser user={auth.user} />
       </SidebarFooter>
     </Sidebar>
   )

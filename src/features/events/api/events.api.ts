@@ -16,7 +16,7 @@ export const getEvents = async (filters: EventFilters) => {
 }
 
 export const getEvent = async (id: string) => {
-  const res = await api.get(`/events/${id}`)
+  const res = await api.get<Event>(`/events/${id}`)
   return res.data
 }
 

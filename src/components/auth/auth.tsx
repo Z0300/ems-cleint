@@ -28,8 +28,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return user?.role === role
   }
 
-
-
   useEffect(() => {
     const initAuth = async () => {
       try {

@@ -42,7 +42,7 @@ export function TableToolbar<T extends string>({
                         placeholder={searchPlaceholder}
                         value={searchValue}
                         onChange={(e) => onSearchChange?.(e.target.value)}
-                        className="w-64 focus-visible:ring-0 focus-visible:ring-offset-0"
+                        className="w-64 focus-visible:ring-0 focus-visible:ring-offset-0 h-8"
                     />
 
                     <Link to={to}>

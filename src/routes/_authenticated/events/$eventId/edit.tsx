@@ -1,14 +1,29 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute, redirect } from '@tanstack/react-router'
 import { useEvent } from '../../../../features/events/queries/event.queries'
 import { EventForm } from '../../../../features/events/form'
 import { useUpdateEvent } from '../../../../features/events/queries/event.mutations'
+import { NotFound } from '../../../../components/common/not-found'
 
 export const Route = createFileRoute('/_authenticated/events/$eventId/edit')({
+  beforeLoad({ context, location }) {
+    console.log("beforeLoad edit route", context.auth.user)
+    if (!context.auth.hasRole('ORGANIZER')) {
+      throw redirect({
+        to: '/unauthorized',
+        search: {
+          redirect: location.href,
+          reason: 'insufficient_role'
+        }
+      })
+    }
+  },
   component: EditEventComponent,
   staticData: {
     title: 'Edit Event'
   }
 })
+
+
 
 function EditEventComponent() {
 
@@ -16,7 +31,9 @@ function EditEventComponent() {
   const { data } = useEvent(eventId)
   const { mutateAsync, isPending } = useUpdateEvent()
 
-  console.log(data)
+  if (!data) {
+    return <NotFound />
+  }
 
   return (
     <EventForm
