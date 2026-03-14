@@ -15,7 +15,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <ThemeProvider defaultTheme='light' storageKey='ems-ui-theme'>
+        <ThemeProvider defaultTheme='light' storageKey='ems-theme'>
           <InnerApp />
         </ThemeProvider>
       </AuthProvider>
