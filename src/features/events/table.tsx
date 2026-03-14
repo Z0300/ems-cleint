@@ -102,12 +102,14 @@ export function EventsTable({ data, status, search, onPageChange, onStatusChange
             </TableBody>
           </Table>
         </div>
-        <TablePagination
-          table={table}
-          page={data.page}
-          pageSize={data.size}
-          onPageChange={onPageChange}
-        />
+        {data.totalElements > data.size && (
+          <TablePagination
+            table={table}
+            page={data.page}
+            pageSize={data.size}
+            onPageChange={onPageChange}
+          />
+        )}
 
       </div>
 

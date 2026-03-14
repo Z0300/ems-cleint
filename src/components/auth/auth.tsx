@@ -7,17 +7,12 @@ interface User {
   fullName: string
   email: string
   role: string
-  //roles: string[]
-  //permissions: string[]
 }
 
 interface AuthState {
   isAuthenticated: boolean
   user: User | null
   hasRole: (role: string) => boolean
-  // hasAnyRole: (roles: string[]) => boolean
-  // hasPermission: (permission: string) => boolean
-  // hasAnyPermission: (permissions: string[]) => boolean
   login: (email: string, password: string) => Promise<void>
   logout: () => void
 }
@@ -33,21 +28,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return user?.role === role
   }
 
-  // const hasAnyRole = (roles: string[]) => {
-  //   return roles.some((role) => user?.role === role)
-  // }
 
-  // const hasPermission = (permission: string) => {
-  //   return user?.permissions.includes(permission) ?? false
-  // }
-
-  // const hasAnyPermission = (permissions: string[]) => {
-  //   return (
-  //     permissions.some((permission) =>
-  //       user?.permissions.includes(permission),
-  //     ) ?? false
-  //   )
-  // }
 
   useEffect(() => {
     const initAuth = async () => {
@@ -97,9 +78,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       login,
       logout,
       hasRole,
-      // hasAnyRole,
-      // hasPermission,
-      // hasAnyPermission
     }}>
       {children}
     </AuthContext.Provider>

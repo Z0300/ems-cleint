@@ -9,15 +9,10 @@ interface AuthState {
     fullName: string;
     email: string,
     role: string
-    // roles: string[]
-    // permissions: string[]
   } | null
   login: (email: string, password: string) => Promise<void>
   logout: () => void
   hasRole: (role: string) => boolean
-  hasAnyRole: (roles: string[]) => boolean
-  // hasPermission: (permission: string) => boolean
-  // hasAnyPermission: (permissions: string[]) => boolean
 }
 
 interface MyRouterContext {

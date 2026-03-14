@@ -33,10 +33,7 @@ export function TablePagination<TData>({
     return (
         <div className="flex items-center justify-between px-4">
             <div className="hidden flex-1 text-sm text-muted-foreground lg:flex">
-                {table.getFilteredSelectedRowModel().rows.length} of{' '}
-                {table.getFilteredRowModel().rows.length} row(s) selected.
             </div>
-
             <div className="flex w-full items-center gap-8 lg:w-fit">
                 <div className="hidden items-center gap-2 lg:flex">
                     <Label htmlFor="rows-per-page" className="text-sm font-medium">
@@ -52,7 +49,7 @@ export function TablePagination<TData>({
                         </SelectTrigger>
 
                         <SelectContent side="top">
-                            {[10, 20, 30, 40, 50].map((size) => (
+                            {[20, 30, 50].map((size) => (
                                 <SelectItem key={size} value={`${size}`}>
                                     {size}
                                 </SelectItem>
