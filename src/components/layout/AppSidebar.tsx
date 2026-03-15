@@ -26,6 +26,7 @@ const data = {
       title: 'Events',
       url: '/events',
       icon: ListCheckIcon,
+      role: 'ORGANIZER'
     },
     {
       title: 'Logout',
@@ -42,6 +43,7 @@ export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sid
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
         <SidebarMenu>
+
           <SidebarMenuItem>
             <SidebarMenuButton asChild className="data-[slot=sidebar-menu-button]:p-1.5!">
               <Link
@@ -53,6 +55,7 @@ export default function AppSidebar({ ...props }: React.ComponentProps<typeof Sid
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
+
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
