@@ -7,7 +7,6 @@ import { Input } from '../components/ui/input'
 import { Button } from '../components/ui/button'
 import * as z from 'zod'
 import { router } from '../router'
-import { toast } from 'sonner'
 
 const formSchema = z.object({
   email: z.string().nonempty('Email is required.'),
@@ -29,14 +28,9 @@ function LoginComponent() {
       onChange: formSchema,
     },
     onSubmit: async ({ value }) => {
-      try {
-        await auth.login(value.email, value.password)
-        await router.invalidate()
-        router.navigate({ to: '/' })
-        toast.success('Login successful')
-      } catch (error) {
-        toast.error('Login failed')
-      }
+      await auth.login(value.email, value.password)
+      await router.invalidate({ sync: true })
+      router.navigate({ to: '/' })
     },
   })
 

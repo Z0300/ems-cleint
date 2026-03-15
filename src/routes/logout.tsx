@@ -3,6 +3,7 @@ import { useEffect } from 'react'
 
 export const Route = createFileRoute('/logout')({
   component: LogoutComponent,
+
 })
 
 function LogoutComponent() {

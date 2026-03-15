@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { api } from '../../api/client'
 import { jwtDecode } from "jwt-decode";
+import { useUserLogin, useUserLogout } from '../../features/auth/types/auth.mutations';
 
 interface User {
   id: string
@@ -23,6 +24,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const { mutateAsync: loginMutation } = useUserLogin()
+  const { mutateAsync: logoutMutation } = useUserLogout()
 
   const hasRole = (role: string) => {
     return user?.role === role
@@ -47,17 +50,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [])
 
   const login = async (email: string, password: string) => {
-    const res = await api.post('/auth/login', { email, password })
-    const decodedToken: { role: string | null } = jwtDecode(res.data.token);
+    const data = await loginMutation({ email, password })
+    const decodedToken: { role: string } = jwtDecode(data.token);
 
-    localStorage.setItem('accessToken', res.data.token)
+    localStorage.setItem('accessToken', data.token)
 
-    setUser({ ...res.data.user, role: decodedToken.role })
+    setUser({ ...data.user, role: decodedToken.role })
     setIsAuthenticated(true)
   }
 
   const logout = async () => {
-    await api.post('/auth/logout')
+    await logoutMutation()
 
     localStorage.removeItem('accessToken')
 
