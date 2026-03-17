@@ -12,7 +12,7 @@ export const useCreateEvent = () => {
 
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: eventKeys.lists(),
+        queryKey: eventKeys.all,
       })
 
       toast.success('Event created successfully')

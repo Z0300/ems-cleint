@@ -27,12 +27,7 @@ const data = {
       url: '/events',
       icon: ListCheckIcon,
       role: 'ORGANIZER'
-    },
-    {
-      title: 'Logout',
-      url: '/logout',
-      icon: LucideLogOut,
-    },
+    }
   ],
 }
 
