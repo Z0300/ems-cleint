@@ -1,14 +1,11 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { login, logout } from '../api/auth.api'
-import { authKeys } from '../queries/auth.keys'
 import { toast } from 'sonner'
 
 export const useUserLogin = () => {
-  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: login,
-    onSuccess: async (data) => {
-      await queryClient.setQueryData(authKeys.user, data)
+    onSuccess: async () => {
       toast.success('Logged in successfully')
     },
     onError: () => {
@@ -18,11 +15,9 @@ export const useUserLogin = () => {
 }
 
 export const useUserLogout = () => {
-  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: logout,
     onSuccess: async () => {
-      await queryClient.setQueryData(authKeys.user, null)
       toast.success('Logged out successfully')
     },
   })

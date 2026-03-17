@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react'
 import { api } from '../../api/client'
 import { jwtDecode } from "jwt-decode";
 import { useUserLogin, useUserLogout } from '../../features/auth/types/auth.mutations';
+import { router } from '../../router';
 
 interface User {
   id: string
@@ -57,6 +58,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     setUser({ ...data.user, role: decodedToken.role })
     setIsAuthenticated(true)
+
+    await router.invalidate()
   }
 
   const logout = async () => {
@@ -66,6 +69,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     setUser(null)
     setIsAuthenticated(false)
+
+    await router.invalidate()
   }
 
   if (isLoading) {

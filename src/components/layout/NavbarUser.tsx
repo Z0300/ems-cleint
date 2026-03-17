@@ -1,8 +1,8 @@
 'use client'
 
-import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut, Sparkles } from 'lucide-react'
+import { BadgeCheck, Bell, ChevronsUpDown, CreditCard, LogOut } from 'lucide-react'
 
-import { Avatar, AvatarFallback, AvatarImage } from '../../components/ui/avatar'
+import { Avatar, AvatarFallback } from '../../components/ui/avatar'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +18,7 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from '../../components/ui/sidebar'
+import { Link } from '@tanstack/react-router'
 
 interface User {
   id: string
@@ -25,9 +26,19 @@ interface User {
   email: string
 }
 
+function getInitials(fullName?: string | null): string {
+  if (!fullName) return '?'
+  return fullName
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map((n) => n[0].toUpperCase())
+    .join('')
+}
+
 export function NavUser({ user }: { user: User | null }) {
   const { isMobile } = useSidebar()
-
+  const initials = getInitials(user?.fullName)
   return (
     <SidebarMenu>
       <SidebarMenuItem>
@@ -38,12 +49,7 @@ export function NavUser({ user }: { user: User | null }) {
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
               <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage
-                  src="https://github.com/shadcn.png"
-                  alt="@email"
-                  className="grayscale"
-                />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback delayMs={0} className="font-medium rounded-lg">{initials}</AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user?.fullName}</span>
@@ -61,12 +67,7 @@ export function NavUser({ user }: { user: User | null }) {
             <DropdownMenuLabel className="p-0 font-normal">
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    className="grayscale"
-                    alt="@email"
-                  />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback delayMs={0} className="rounded-lg">{initials}</AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-medium">{user?.fullName}</span>
@@ -91,10 +92,12 @@ export function NavUser({ user }: { user: User | null }) {
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOut />
-              Log out
-            </DropdownMenuItem>
+            <Link to="/logout">
+              <DropdownMenuItem>
+                <LogOut />
+                Log out
+              </DropdownMenuItem>
+            </Link>
           </DropdownMenuContent>
         </DropdownMenu>
       </SidebarMenuItem>

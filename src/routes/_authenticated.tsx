@@ -4,7 +4,6 @@ import AppSidebar from '../components/layout/AppSidebar'
 import { SiteHeader } from '../components/layout/SiteHeader'
 export const Route = createFileRoute('/_authenticated')({
   beforeLoad: async ({ context, location }) => {
-    await context.auth.waitUntilReady
     if (!context.auth.user) {
       throw redirect({
         to: '/login',
