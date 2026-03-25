@@ -1,6 +1,6 @@
 'use client'
 
-import { AlarmClockCheckIcon, GaugeCircle, ListCheckIcon, LucideLogOut } from 'lucide-react'
+import { AlarmClockCheckIcon, GaugeCircle, ListCheckIcon } from 'lucide-react'
 import {
   Sidebar,
   SidebarHeader,

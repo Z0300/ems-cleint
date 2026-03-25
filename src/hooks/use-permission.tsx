@@ -1,10 +1,9 @@
-import { useRouter } from '@tanstack/react-router'
-
+import { useAuth } from '../components/auth/auth'
+ 
 export function usePermissions() {
-    const router = useRouter()
-    const auth = router.options.context.auth
-
+    const { hasRole } = useAuth()
+ 
     return {
-        hasRole: auth.hasRole,
+        hasRole,
     }
 }

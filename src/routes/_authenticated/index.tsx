@@ -1,4 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
+import Dashboard from '../../components/user/dashboard'
+import { PermissionGuard } from '../../components/auth/permission-guard'
 
 export const Route = createFileRoute('/_authenticated/')({
   component: DashboardComponent,
@@ -10,11 +12,10 @@ export const Route = createFileRoute('/_authenticated/')({
 function DashboardComponent() {
   const { auth } = Route.useRouteContext()
   return (
-    <div className="grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4 dark:*:data-[slot=card]:bg-card">
-      {' '}
-      <p className="text-gray-600">
-        Hello, <strong>{auth.user?.fullName}</strong>! You are successfully authenticated.
-      </p>
+    <div className='relative flex flex-col gap-4 overflow-auto px-4 lg:px-6'>
+      <PermissionGuard role="ATTENDEE">
+        <Dashboard user={auth.user} />
+      </PermissionGuard>
     </div>
   )
 }
