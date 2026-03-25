@@ -13,6 +13,7 @@ dist-ssr
 *.local
 .tanstack
 .env
+lint_output.txt
 
 # Editor directories and files
 .vscode/*
