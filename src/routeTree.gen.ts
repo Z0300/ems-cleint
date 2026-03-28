@@ -16,6 +16,7 @@ import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthenticatedRouteImport } from './routes/_authenticated'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
 import { Route as AuthenticatedEventsIndexRouteImport } from './routes/_authenticated/events/index'
 import { Route as AuthenticatedEventsCreateRouteImport } from './routes/_authenticated/events/create'
 import { Route as AuthenticatedEventsEventIdEditRouteImport } from './routes/_authenticated/events/$eventId/edit'
@@ -54,6 +55,11 @@ const AuthenticatedIndexRoute = AuthenticatedIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthenticatedRoute,
 } as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRoute,
+} as any)
 const AuthenticatedEventsIndexRoute =
   AuthenticatedEventsIndexRouteImport.update({
     id: '/events/',
@@ -80,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/notfound': typeof NotfoundRoute
   '/signup': typeof SignupRoute
   '/unauthorized': typeof UnauthorizedRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/events/create': typeof AuthenticatedEventsCreateRoute
   '/events/': typeof AuthenticatedEventsIndexRoute
   '/events/$eventId/edit': typeof AuthenticatedEventsEventIdEditRoute
@@ -90,6 +97,7 @@ export interface FileRoutesByTo {
   '/notfound': typeof NotfoundRoute
   '/signup': typeof SignupRoute
   '/unauthorized': typeof UnauthorizedRoute
+  '/profile': typeof AuthenticatedProfileRoute
   '/': typeof AuthenticatedIndexRoute
   '/events/create': typeof AuthenticatedEventsCreateRoute
   '/events': typeof AuthenticatedEventsIndexRoute
@@ -103,6 +111,7 @@ export interface FileRoutesById {
   '/notfound': typeof NotfoundRoute
   '/signup': typeof SignupRoute
   '/unauthorized': typeof UnauthorizedRoute
+  '/_authenticated/profile': typeof AuthenticatedProfileRoute
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/events/create': typeof AuthenticatedEventsCreateRoute
   '/_authenticated/events/': typeof AuthenticatedEventsIndexRoute
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
     | '/notfound'
     | '/signup'
     | '/unauthorized'
+    | '/profile'
     | '/events/create'
     | '/events/'
     | '/events/$eventId/edit'
@@ -127,6 +137,7 @@ export interface FileRouteTypes {
     | '/notfound'
     | '/signup'
     | '/unauthorized'
+    | '/profile'
     | '/'
     | '/events/create'
     | '/events'
@@ -139,6 +150,7 @@ export interface FileRouteTypes {
     | '/notfound'
     | '/signup'
     | '/unauthorized'
+    | '/_authenticated/profile'
     | '/_authenticated/'
     | '/_authenticated/events/create'
     | '/_authenticated/events/'
@@ -205,6 +217,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedIndexRouteImport
       parentRoute: typeof AuthenticatedRoute
     }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRoute
+    }
     '/_authenticated/events/': {
       id: '/_authenticated/events/'
       path: '/events'
@@ -230,6 +249,7 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteChildren {
+  AuthenticatedProfileRoute: typeof AuthenticatedProfileRoute
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedEventsCreateRoute: typeof AuthenticatedEventsCreateRoute
   AuthenticatedEventsIndexRoute: typeof AuthenticatedEventsIndexRoute
@@ -237,6 +257,7 @@ interface AuthenticatedRouteChildren {
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
+  AuthenticatedProfileRoute: AuthenticatedProfileRoute,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedEventsCreateRoute: AuthenticatedEventsCreateRoute,
   AuthenticatedEventsIndexRoute: AuthenticatedEventsIndexRoute,
